@@ -1,0 +1,20 @@
+
+snake.png
+size: 256,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+body
+  rotate: false
+  xy: 127, 109
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+eyes
+  rotate: false
+  xy: 2, 2
+  size: 123, 123
+  orig: 123, 123
+  offset: 0, 0
+  index: -1

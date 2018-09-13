@@ -16,7 +16,7 @@ public class DesktopLauncher {
             settings.maxWidth = 1024;
             settings.duplicatePadding = false;
             settings.debug = drawDebugOutline;
-            TexturePacker.process(settings, "../../desktop/assets-raw/images",
+            TexturePacker.process(settings, "../../desktop/images",
                     "../../android/assets/images", "snake");
         }
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
