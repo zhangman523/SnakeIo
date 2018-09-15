@@ -26,6 +26,9 @@ public class Snake extends AbstractGameObject implements Disposable {
     private float speed = 8 * 10;
     public Array<Movement> movements;
 
+    private double angle;//蛇当前运动的角度0-360度
+    private double toAngle;//将要转向的角度
+    private double turnSpeed = Math.toRadians(2);//转弯速度;
 
     public Snake() {
         initRegion();
@@ -41,7 +44,8 @@ public class Snake extends AbstractGameObject implements Disposable {
         scale.set(0.7f, 0.7f);
         bounds.set(0, 0, dimension.x, dimension.y);
         movements = new Array<Movement>();
-        velocity.set(speed, 0);
+        angle = 0;//当前角度设置为0度 向左运行
+        toAngle = angle;
     }
 
     private void initRegion() {
@@ -54,7 +58,6 @@ public class Snake extends AbstractGameObject implements Disposable {
             }
         });
         assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
-        //load sounds
         assetManager.finishLoading();
         TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
         // enable texture filtering for pixel smoothing;
@@ -63,6 +66,10 @@ public class Snake extends AbstractGameObject implements Disposable {
         }
         eyes = atlas.findRegion("eyes");
         body = atlas.findRegion("body");
+    }
+
+    public void setDirection(double angle) {
+        toAngle = angle;
     }
 
     @Override
@@ -106,6 +113,32 @@ public class Snake extends AbstractGameObject implements Disposable {
         if (movements.size > length) {
             movements.removeValue(movements.first(), true);
         }
+        angle = (Math.PI * 2 + angle) % (Math.PI * 2);//把负度数转为正度数
+        if (Math.abs(angle - toAngle) <= turnSpeed) {
+            toAngle = angle = toAngle % (Math.PI * 2);
+        } else {
+            if (Math.abs(angle - toAngle) < Math.PI) { //如果度数差小于 180度
+                if (angle < toAngle) { //如果转向度数大于当前度数 则 逆时针旋转 toAngle-angle 度数(如 30-80度
+                    angle += turnSpeed;
+                } else {
+                    angle -= turnSpeed;
+                }
+            } else {
+                if (angle < toAngle) {
+                    angle -= turnSpeed;
+
+                } else {
+                    angle += turnSpeed;
+                }
+            }
+            System.out.println(" angle = " + Math.toDegrees(angle) + " toAngle = " + Math.toDegrees(toAngle));
+        }
+        angle = angle % (Math.PI * 2);
+        float vx = (float) (speed * Math.cos(angle));
+        float vy = (float) (speed * Math.sin(angle));
+        velocity.set(vx, vy);
+        rotation = (float) (360 + Math.atan2(velocity.y, velocity.x)
+                / (Math.PI / 180) - 90);
         super.update(deltaTime);
     }
 
