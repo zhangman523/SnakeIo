@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import zhangman523.github.snakeio.objects.Food;
@@ -15,9 +16,11 @@ public class WorldController extends InputAdapter implements Disposable {
 
     Snake snake;
     Array<Food> foods;
+    Array<Snake> enemies;//敌人
     public CameraHelper cameraHelper;
     private Circle c1 = new Circle();//用来检测碰撞
     private Circle c2 = new Circle();
+    private float aroundDest = 1f;
 
     public WorldController() {
         snake = new Snake();
@@ -27,15 +30,28 @@ public class WorldController extends InputAdapter implements Disposable {
         for (int i = 0; i < 100; i++) {
             foods.add(Food.nextRandomFood());
         }
+
+        enemies = new Array<Snake>();
+        for (int i = 0; i < 10; i++) {
+            Snake snake = new Snake();
+            snake.angle = MathUtils.random(0f, (float) (Math.PI * 2));
+            snake.toAngle = snake.angle;
+            snake.position.set(MathUtils.random(-Constants.MAP_WIDTH / 2 + 5, Constants.MAP_WIDTH / 2 - 5), MathUtils.random(-Constants.MAP_HEIGHT / 2 + 5, Constants.MAP_HEIGHT / 2 - 5));
+            enemies.add(snake);
+        }
     }
 
     public void update(float deltaTime) {
         handleInput(deltaTime);
+        enemyAi();
         snake.update(deltaTime);
         testCollision();
         cameraHelper.update(deltaTime);
         for (Food food : foods) {
             food.update(deltaTime);
+        }
+        for (Snake snake : enemies) {
+            snake.update(deltaTime);
         }
     }
 
@@ -85,6 +101,63 @@ public class WorldController extends InputAdapter implements Disposable {
             return;
         }
         snake.setDirection(Math.toRadians(angle));
+    }
+
+    public void enemyAi() {
+        for (int i = 0; i < enemies.size; i++) {
+            Snake snake = enemies.get(i);
+            aiTurnAround(snake);
+        }
+    }
+
+    private void aiTurnAround(Snake snake) {
+        float radius = snake.bounds.width / 2;
+        if ((snake.position.x - radius < -Constants.MAP_WIDTH / 2 + aroundDest
+                && snake.toAngle > Math.PI / 2
+                && snake.toAngle < Math.PI * 3 / 2) || (snake.position.x + radius > Constants.MAP_WIDTH / 2 - aroundDest
+                && (snake.toAngle < Math.PI / 2 || snake.toAngle > Math.PI * 3 / 2))) {//判断是否靠近左右边界，如果靠近 掉头
+            Gdx.app.debug("AI", " x reach left or right " + snake.toAngle + " position: " + snake.position.toString());
+            snake.setDirection(Math.PI - snake.toAngle);
+        } else if ((snake.position.y - radius < -Constants.MAP_HEIGHT / 2 + aroundDest && snake.toAngle > Math.PI)
+                || (snake.position.y + radius > Constants.MAP_HEIGHT / 2 - aroundDest && snake.toAngle < Math.PI)) {
+            Gdx.app.debug("AI", " y reach bottom or top " + snake.toAngle + " position: " + snake.position.toString());
+            snake.setDirection(Math.PI * 2 - snake.toAngle);
+        } else {
+            collisionDetect(snake, this.snake);//判断是否要和玩家碰撞
+            for (Snake s : enemies) {
+                if (s == snake) continue;
+                collisionDetect(snake, s);
+            }
+        }
+    }
+
+    private void collisionDetect(Snake snake, Snake other) {
+//        if (snake.isDead || other.isDead) return;
+        for (Snake.Movement movement : other.movements) {
+            float dx = movement.position.x - snake.position.x;
+            float dy = movement.position.y - snake.position.y;
+            if (Math.abs(dx) > snake.dimension.x * 2 || Math.abs(dy) > snake.dimension.y * 2) {
+                return;
+            }
+            double angle;
+            if (dx == 0) {
+                if (dy > 0) {
+                    angle = Math.PI / 2;
+                } else {
+                    angle = -Math.PI / 2;
+                }
+            } else {
+                angle = Math.atan2(dy, dx);
+                if (dx < 0) {
+                    angle += Math.PI;
+                }
+            }
+//            angle = angle % (Math.PI * 2);
+            Gdx.app.debug("AI", " angle + " + angle + " snake Angleest:" + snake.toAngle);
+            if (Math.abs(angle - snake.toAngle) < Math.toRadians(5)) {
+                snake.setDirection(snake.toAngle + Math.random() * Math.PI * 3 / 2);
+            }
+        }
     }
 
     @Override

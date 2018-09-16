@@ -16,8 +16,8 @@ public class Snake extends AbstractGameObject implements Disposable {
     private float speed = 4;
     public Array<Movement> movements;
 
-    private double angle;//蛇当前运动的角度0-360度
-    private double toAngle;//将要转向的角度
+    public double angle;//蛇当前运动的角度0-360度
+    public double toAngle;//将要转向的角度
     private double turnSpeed = Math.toRadians(10);//转弯速度;
 
     private boolean isSpeedUp; // 加速
@@ -47,6 +47,7 @@ public class Snake extends AbstractGameObject implements Disposable {
     }
 
     public void setDirection(double angle) {
+        angle = angle % (Math.PI * 2);
         toAngle = angle;
     }
 

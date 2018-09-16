@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import zhangman523.github.snakeio.objects.Food;
+import zhangman523.github.snakeio.objects.Snake;
 
 public class WorldRenderer implements Disposable {
 
@@ -59,6 +60,9 @@ public class WorldRenderer implements Disposable {
         worldController.snake.render(batch);
         for (Food food : worldController.foods) {
             food.render(batch);
+        }
+        for (Snake snake : worldController.enemies) {
+            snake.render(batch);
         }
         batch.end();
     }
