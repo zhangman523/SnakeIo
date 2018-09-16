@@ -1,34 +1,24 @@
 package zhangman523.github.snakeio.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetDescriptor;
-import com.badlogic.gdx.assets.AssetErrorListener;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import zhangman523.github.snakeio.Constants;
+import zhangman523.github.snakeio.Assets;
 
 public class Snake extends AbstractGameObject implements Disposable {
     private static final String TAG = Snake.class.getSimpleName();
     TextureRegion eyes;
     TextureRegion body;
-    private AssetManager assetManager;
-
-    private int length = 100 * 80;//长度
-    private float speed = 8 * 10;
+    private int length = 100;//长度
+    private float speed = 4;
     public Array<Movement> movements;
 
     private double angle;//蛇当前运动的角度0-360度
     private double toAngle;//将要转向的角度
-    private double turnSpeed = Math.toRadians(2);//转弯速度;
+    private double turnSpeed = Math.toRadians(10);//转弯速度;
 
     private boolean isSpeedUp; // 加速
     private float oldSpeed;
@@ -39,10 +29,10 @@ public class Snake extends AbstractGameObject implements Disposable {
     }
 
     private void init() {
-        dimension.set(20, 20);
+        dimension.set(1, 1);
         origin.set(dimension.x / 2, dimension.y / 2);
         terminalVelocity.set(speed * 2, speed * 2);
-        position.set(50, 120);
+        position.set(0, 0);
         rotation = -90;
         scale.set(0.7f, 0.7f);
         bounds.set(0, 0, dimension.x, dimension.y);
@@ -52,23 +42,8 @@ public class Snake extends AbstractGameObject implements Disposable {
     }
 
     private void initRegion() {
-        assetManager = new AssetManager();
-        assetManager.setErrorListener(new AssetErrorListener() {
-            @Override
-            public void error(AssetDescriptor asset, Throwable throwable) {
-                Gdx.app.error(TAG, "Couldn't load asset '"
-                        + asset.fileName + "'", throwable);
-            }
-        });
-        assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
-        assetManager.finishLoading();
-        TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
-        // enable texture filtering for pixel smoothing;
-        for (Texture texture : atlas.getTextures()) {
-            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        }
-        eyes = atlas.findRegion("eyes");
-        body = atlas.findRegion("body");
+        eyes = Assets.instance.snake.eyes;
+        body = Assets.instance.snake.body;
     }
 
     public void setDirection(double angle) {
@@ -89,6 +64,10 @@ public class Snake extends AbstractGameObject implements Disposable {
         if (!isSpeedUp) return;
         isSpeedUp = false;
         this.speed = oldSpeed;
+    }
+
+    public void eatFood(int score) {
+        length += score;
     }
 
     @Override
@@ -163,7 +142,6 @@ public class Snake extends AbstractGameObject implements Disposable {
 
     @Override
     public void dispose() {
-        assetManager.dispose();
     }
 
     public class Movement {

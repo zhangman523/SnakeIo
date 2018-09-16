@@ -8,6 +8,10 @@ public class Constants {
     // GUI Width
     public static final float VIEWPORT_GUI_WIDTH = 800.0f; // GUI Height
     public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
+    public static final int MAP_WIDTH = 50;
+    public static final int MAP_HEIGHT = 50;
+    public static final int MAP_RECT_SIZE = 1;
+
 
     public static final String TEXTURE_ATLAS_OBJECTS = "images/snake.atlas";
 
