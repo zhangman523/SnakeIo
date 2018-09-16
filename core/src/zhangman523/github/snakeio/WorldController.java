@@ -11,12 +11,6 @@ public class WorldController extends InputAdapter implements Disposable {
 
     Snake snake;
 
-    private int[][] angleArray = new int[][]{
-            {-1, 270, 90},
-            {180, 225, 135},
-            {0, 315, 45}
-    };//定义二维数组分别代表 上下左右 点击的角度
-
     public WorldController() {
         snake = new Snake();
     }
@@ -28,6 +22,11 @@ public class WorldController extends InputAdapter implements Disposable {
 
     private void handleInput(float deltaTime) {
         if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
+        int[][] angleArray = new int[][]{
+                {-1, 270, 90},
+                {180, 225, 135},
+                {0, 315, 45}
+        };//定义二维数组分别代表 上下左右 点击的角度
         int i = 0, j = 0;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             i = 1;
@@ -45,6 +44,26 @@ public class WorldController extends InputAdapter implements Disposable {
             return;
         }
         snake.setDirection(Math.toRadians(angle));
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.SPACE:
+                snake.speedUp();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.SPACE:
+                snake.speedDown();
+                break;
+        }
+        return true;
     }
 
     @Override

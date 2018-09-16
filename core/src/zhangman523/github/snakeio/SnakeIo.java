@@ -14,6 +14,7 @@ public class SnakeIo extends ApplicationAdapter {
     public void create() {
         worldController = new WorldController();
         worldRenderer = new WorldRenderer(worldController);
+        Gdx.input.setInputProcessor(worldController);
     }
 
     @Override

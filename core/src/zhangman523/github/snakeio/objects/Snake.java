@@ -30,6 +30,9 @@ public class Snake extends AbstractGameObject implements Disposable {
     private double toAngle;//将要转向的角度
     private double turnSpeed = Math.toRadians(2);//转弯速度;
 
+    private boolean isSpeedUp; // 加速
+    private float oldSpeed;
+
     public Snake() {
         initRegion();
         init();
@@ -38,7 +41,7 @@ public class Snake extends AbstractGameObject implements Disposable {
     private void init() {
         dimension.set(20, 20);
         origin.set(dimension.x / 2, dimension.y / 2);
-        terminalVelocity.set(100, 100);
+        terminalVelocity.set(speed * 2, speed * 2);
         position.set(50, 120);
         rotation = -90;
         scale.set(0.7f, 0.7f);
@@ -70,6 +73,22 @@ public class Snake extends AbstractGameObject implements Disposable {
 
     public void setDirection(double angle) {
         toAngle = angle;
+    }
+
+    /**
+     * 加速
+     */
+    public void speedUp() {
+        if (isSpeedUp) return;
+        isSpeedUp = true;
+        oldSpeed = speed;
+        speed *= 2;
+    }
+
+    public void speedDown() {
+        if (!isSpeedUp) return;
+        isSpeedUp = false;
+        this.speed = oldSpeed;
     }
 
     @Override
