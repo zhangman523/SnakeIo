@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import zhangman523.github.snakeio.objects.Food;
@@ -21,6 +22,8 @@ public class WorldController extends InputAdapter implements Disposable {
     private Circle c1 = new Circle();//用来检测碰撞
     private Circle c2 = new Circle();
     private float aroundDest = 1f;
+
+    public Stage touchProcessor;
 
     public WorldController() {
         snake = new Snake();
@@ -50,9 +53,9 @@ public class WorldController extends InputAdapter implements Disposable {
         for (Food food : foods) {
             food.update(deltaTime);
         }
-        for (Snake snake : enemies) {
-            snake.update(deltaTime);
-        }
+//        for (Snake snake : enemies) {
+//            snake.update(deltaTime);
+//        }
     }
 
     private void testCollision() {
@@ -178,6 +181,22 @@ public class WorldController extends InputAdapter implements Disposable {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return touchProcessor != null && touchProcessor.touchDown(screenX, screenY, pointer, button);
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return touchProcessor != null && touchProcessor.touchDragged(screenX, screenY, pointer);
+
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return touchProcessor != null && touchProcessor.touchUp(screenX, screenY, pointer, button);
     }
 
     @Override

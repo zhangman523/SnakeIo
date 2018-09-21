@@ -15,4 +15,7 @@ public class Constants {
 
     public static final String TEXTURE_ATLAS_OBJECTS = "images/snake.atlas";
 
+    public static final String SKIN_TOUCHPAD_UI = "images/touchpad-ui.json";
+    public static final String TEXTURE_ATLAS_TOUCHPAD_UI = "images/touchpad-ui.atlas";
+
 }

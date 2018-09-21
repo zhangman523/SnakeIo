@@ -1,12 +1,12 @@
 
 snake.png
-size: 256,128
+size: 512,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 body
   rotate: false
-  xy: 127, 109
+  xy: 304, 411
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -16,5 +16,12 @@ eyes
   xy: 2, 2
   size: 123, 123
   orig: 123, 123
+  offset: 0, 0
+  index: -1
+lightning
+  rotate: false
+  xy: 2, 127
+  size: 300, 300
+  orig: 300, 300
   offset: 0, 0
   index: -1

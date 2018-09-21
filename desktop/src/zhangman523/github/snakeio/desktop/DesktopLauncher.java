@@ -18,6 +18,8 @@ public class DesktopLauncher {
             settings.debug = drawDebugOutline;
             TexturePacker.process(settings, "../../desktop/images",
                     "../../android/assets/images", "snake");
+            TexturePacker.process(settings, "../../desktop/images-ui",
+                    "../../android/assets/images", "touchpad-ui");
         }
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = 800;

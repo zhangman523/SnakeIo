@@ -15,6 +15,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
     private AssetManager assetManager;
     public AssetSnake snake;
+    public AssetUi ui;
 
     private Assets() {
     }
@@ -31,6 +32,7 @@ public class Assets implements Disposable, AssetErrorListener {
         }
 
         snake = new AssetSnake(atlas);
+        ui = new AssetUi(atlas);
     }
 
     @Override
@@ -51,6 +53,14 @@ public class Assets implements Disposable, AssetErrorListener {
         public AssetSnake(TextureAtlas atlas) {
             eyes = atlas.findRegion("eyes");
             body = atlas.findRegion("body");
+        }
+    }
+
+    public class AssetUi {
+        public final TextureAtlas.AtlasRegion lightning;
+
+        public AssetUi(TextureAtlas atlas) {
+            lightning = atlas.findRegion("lightning");
         }
     }
 }
