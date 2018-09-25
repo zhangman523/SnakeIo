@@ -28,6 +28,18 @@ public class SnakeIo extends ApplicationAdapter {
     }
 
     @Override
+    public void resume() {
+        super.resume();
+        AudioManager.instance.play(Assets.instance.sounds.bm);
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+        AudioManager.instance.stopMusic();
+    }
+
+    @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         worldRenderer.resize(width, height);
