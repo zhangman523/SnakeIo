@@ -13,10 +13,12 @@ public class SnakeIo extends ApplicationAdapter {
 
     @Override
     public void create() {
+        GamePreferences.instance.load();
         Assets.instance.init(new AssetManager());
         worldController = new WorldController();
         worldRenderer = new WorldRenderer(worldController);
         Gdx.input.setInputProcessor(worldController);
+        AudioManager.instance.play(Assets.instance.sounds.bm);
     }
 
     @Override
@@ -28,18 +30,6 @@ public class SnakeIo extends ApplicationAdapter {
     }
 
     @Override
-    public void resume() {
-        super.resume();
-        AudioManager.instance.play(Assets.instance.sounds.bm);
-    }
-
-    @Override
-    public void pause() {
-        super.pause();
-        AudioManager.instance.stopMusic();
-    }
-
-    @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         worldRenderer.resize(width, height);
@@ -47,6 +37,7 @@ public class SnakeIo extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        AudioManager.instance.stopMusic();
         worldRenderer.dispose();
         worldController.dispose();
         Assets.instance.dispose();
