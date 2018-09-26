@@ -19,4 +19,7 @@ public class Constants {
     public static final String TEXTURE_ATLAS_TOUCHPAD_UI = "images/touchpad-ui.atlas";
     public static final String PREFERENCES = "PREFERENCES";
 
+    public static final String SKIN_LIBGDX_UI = "images/uiskin.json";
+    public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
+
 }

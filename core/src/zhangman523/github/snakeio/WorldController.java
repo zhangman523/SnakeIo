@@ -22,10 +22,16 @@ public class WorldController extends InputAdapter implements Disposable {
     private Circle c1 = new Circle();//用来检测碰撞
     private Circle c2 = new Circle();
     private float aroundDest = 1f;
-
     public Stage touchProcessor;
 
+    public boolean gameOver;
+
     public WorldController() {
+        init();
+    }
+
+    public void init() {
+        gameOver = false;
         snake = new Snake();
         cameraHelper = new CameraHelper();
         cameraHelper.setTarget(snake);
@@ -45,6 +51,7 @@ public class WorldController extends InputAdapter implements Disposable {
     }
 
     public void update(float deltaTime) {
+        if (isGameOver()) return;
         handleInput(deltaTime);
         enemyAi();
         snake.update(deltaTime);
@@ -56,6 +63,7 @@ public class WorldController extends InputAdapter implements Disposable {
 //        for (Snake snake : enemies) {
 //            snake.update(deltaTime);
 //        }
+        checkGameOver();
     }
 
     private void testCollision() {
@@ -160,6 +168,22 @@ public class WorldController extends InputAdapter implements Disposable {
             if (Math.abs(angle - snake.toAngle) < Math.toRadians(5)) {
                 snake.setDirection(snake.toAngle + Math.random() * Math.PI * 3 / 2);
             }
+        }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    private void checkGameOver() {
+        float radius = snake.bounds.width / 2;
+        if (snake.position.x + radius >= Constants.MAP_WIDTH / 2
+                || snake.position.x <= -Constants.MAP_WIDTH / 2
+                || snake.position.y + radius >= Constants.MAP_HEIGHT / 2
+                || snake.position.y <= -Constants.MAP_WIDTH / 2) {
+            gameOver = true;
+            AudioManager.instance.stopMusic();
+            AudioManager.instance.play(Assets.instance.sounds.liveLost);
         }
     }
 

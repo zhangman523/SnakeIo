@@ -6,12 +6,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -19,6 +16,10 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import zhangman523.github.snakeio.objects.Food;
 import zhangman523.github.snakeio.objects.Snake;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
 public class WorldRenderer implements Disposable {
 
@@ -30,6 +31,10 @@ public class WorldRenderer implements Disposable {
     public Stage stage;
     private Touchpad touchpad;
     private ImageButton btnSpeed;
+    private Skin skinLibgdx;//默认皮肤private Window winGameOver;
+    private TextButton btnBack;
+    private TextButton btnStart;
+    private Window winGameOver;
 
     public WorldRenderer(WorldController worldController) {
         this.worldController = worldController;
@@ -49,8 +54,11 @@ public class WorldRenderer implements Disposable {
                 Constants.VIEWPORT_GUI_HEIGHT));
         touchPadSkin = new Skin(Gdx.files.internal(Constants.SKIN_TOUCHPAD_UI),
                 new TextureAtlas(Constants.TEXTURE_ATLAS_TOUCHPAD_UI));
+        skinLibgdx = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI),
+                new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
         stage.addActor(buildSpeed());
         stage.addActor(buildTouchPad());
+        stage.addActor(buildGameOverDialog());
         worldController.touchProcessor = stage;
     }
 
@@ -59,6 +67,9 @@ public class WorldRenderer implements Disposable {
         renderWorld(spriteBatch);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        if (worldController.isGameOver()) {
+            showOptionsWindow(true, true);
+        }
     }
 
     private void renderBackground(ShapeRenderer shapeRenderer) {
@@ -145,6 +156,47 @@ public class WorldRenderer implements Disposable {
             }
         });
         return touchpad;
+    }
+
+    private Table buildGameOverDialog() {
+        winGameOver = new Window("GAME OVER", skinLibgdx);
+        Table table = new Table();
+        table.pad(10, 10, 0, 10);
+        table.add(new Label("GAME OVER!", skinLibgdx, "default-font", Color.ORANGE)).colspan(3);
+        table.row();
+        btnBack = new TextButton("Back", skinLibgdx);
+        table.add(btnBack).padRight(30);
+        btnBack.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                showOptionsWindow(false, true);
+                Gdx.app.exit();
+            }
+        });
+        btnStart = new TextButton("ReStart", skinLibgdx);
+        table.add(btnStart);
+        btnStart.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.instance.play(Assets.instance.sounds.bm);
+                showOptionsWindow(false, true);
+                worldController.init();
+            }
+        });
+        winGameOver.add(table).pad(10, 10, 0, 10);
+        winGameOver.setColor(1, 1, 1, 0.8f);
+        showOptionsWindow(false, false);
+        winGameOver.pack();
+        winGameOver.setPosition((Constants.VIEWPORT_GUI_WIDTH - winGameOver.getWidth()) / 2,
+                (Constants.VIEWPORT_GUI_HEIGHT - winGameOver.getHeight()) / 2);
+        return winGameOver;
+    }
+
+    public void showOptionsWindow(boolean visible, boolean animated) {
+        float alphaTo = visible ? 0.8f : 0.0f;
+        float duration = animated ? 1.0f : 0.0f;
+        final Touchable touchEnable = visible ? Touchable.enabled : Touchable.disabled;
+        winGameOver.addAction(sequence(touchable(touchEnable), alpha(alphaTo, duration)));
     }
 
     public void resize(int width, int height) {
