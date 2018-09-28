@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import zhangman523.github.snakeio.util.Constants;
 
 public class Assets implements Disposable, AssetErrorListener {
     private static final String TAG = Assets.class.getName();

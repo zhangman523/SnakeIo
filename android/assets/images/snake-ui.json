@@ -1,0 +1,36 @@
+{
+  com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: default.fnt } },
+  com.badlogic.gdx.graphics.Color: {
+    green: { a: 1, b: 0, g: 1, r: 0 },
+    white: { a: 1, b: 1, g: 1, r: 1 },
+    red: { a: 1, b: 0, g: 0, r: 1 },
+    black: { a: 1, b: 0, g: 0, r: 0 }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+    dialogDim: { name: popup_background, color: { r: 0, g: 0, b: 0, a: 0.45 } }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
+    default: {
+      background: knob_background,
+      knob: knob,
+    }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+    endless:{down: endless_mode,up:endless_mode},
+    challenge:{down:challenge_mode,up:challenge_mode},
+    team:{down:team_mode,up:team_mode},
+    robcoin:{down:robcoin_mode,up:robcoin_mode},
+    setting:{down:setting_icon,up:setting_icon}
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Image: {
+    home_bg:{ drawable: home_bg },
+    snake_name_icon:{drawable:snake_name_icon}
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+    default: { titleFont: default-font, background: popup_background, titleFontColor: red },
+    dialog: { titleFont: default-font, background: popup_background, titleFontColor: red, stageBackground: dialogDim }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+    default: { checkboxOn: check_setting_on, checkboxOff: check_setting_off, font: default-font, fontColor: red }
+  },
+}

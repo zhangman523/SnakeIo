@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import zhangman523.github.snakeio.Assets;
-import zhangman523.github.snakeio.Constants;
+import zhangman523.github.snakeio.util.Constants;
 
 public class Food extends AbstractGameObject {
 

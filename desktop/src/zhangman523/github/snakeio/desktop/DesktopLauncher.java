@@ -13,13 +13,13 @@ public class DesktopLauncher {
         if (rebuildAtlas) {
             TexturePacker.Settings settings = new TexturePacker.Settings();
             settings.maxHeight = 1024;
-            settings.maxWidth = 1024;
+            settings.maxWidth = 2048;
             settings.duplicatePadding = false;
             settings.debug = drawDebugOutline;
             TexturePacker.process(settings, "../../desktop/images",
                     "../../android/assets/images", "snake");
             TexturePacker.process(settings, "../../desktop/images-ui",
-                    "../../android/assets/images", "touchpad-ui");
+                    "../../android/assets/images", "snake-ui");
         }
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = 800;

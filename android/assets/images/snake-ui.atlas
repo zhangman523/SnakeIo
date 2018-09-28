@@ -1,0 +1,90 @@
+
+snake-ui.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+challenge_mode
+  rotate: false
+  xy: 1640, 358
+  size: 322, 204
+  orig: 322, 204
+  offset: 0, 0
+  index: -1
+check_setting_off
+  rotate: false
+  xy: 2, 2
+  size: 44, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+check_setting_on
+  rotate: false
+  xy: 1074, 178
+  size: 44, 44
+  orig: 44, 44
+  offset: 0, 0
+  index: -1
+endless_mode
+  rotate: false
+  xy: 1338, 564
+  size: 324, 410
+  orig: 324, 410
+  offset: 0, 0
+  index: -1
+home_bg
+  rotate: false
+  xy: 2, 224
+  size: 1334, 750
+  orig: 1334, 750
+  offset: 0, 0
+  index: -1
+knob
+  rotate: false
+  xy: 1990, 924
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+knob_background
+  rotate: false
+  xy: 1338, 262
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+popup_background
+  rotate: false
+  xy: 1640, 294
+  size: 126, 62
+  orig: 126, 62
+  offset: 0, 0
+  index: -1
+robcoin_mode
+  rotate: false
+  xy: 750, 18
+  size: 322, 204
+  orig: 322, 204
+  offset: 0, 0
+  index: -1
+setting_icon
+  rotate: false
+  xy: 1768, 316
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+snake_name_icon
+  rotate: false
+  xy: 2, 48
+  size: 746, 174
+  orig: 746, 174
+  offset: 0, 0
+  index: -1
+team_mode
+  rotate: false
+  xy: 1664, 564
+  size: 324, 410
+  orig: 324, 410
+  offset: 0, 0
+  index: -1

@@ -1,4 +1,4 @@
-package zhangman523.github.snakeio;
+package zhangman523.github.snakeio.util;
 
 public class Constants {
     // Visible game world is 30 meters wide
@@ -15,8 +15,8 @@ public class Constants {
 
     public static final String TEXTURE_ATLAS_OBJECTS = "images/snake.atlas";
 
-    public static final String SKIN_TOUCHPAD_UI = "images/touchpad-ui.json";
-    public static final String TEXTURE_ATLAS_TOUCHPAD_UI = "images/touchpad-ui.atlas";
+    public static final String SKIN_TOUCHPAD_UI = "images/snake-ui.json";
+    public static final String TEXTURE_ATLAS_TOUCHPAD_UI = "images/snake-ui.atlas";
     public static final String PREFERENCES = "PREFERENCES";
 
     public static final String SKIN_LIBGDX_UI = "images/uiskin.json";

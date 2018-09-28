@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import zhangman523.github.snakeio.objects.Food;
 import zhangman523.github.snakeio.objects.Snake;
+import zhangman523.github.snakeio.util.AudioManager;
+import zhangman523.github.snakeio.util.CameraHelper;
+import zhangman523.github.snakeio.util.Constants;
 
 public class WorldController extends InputAdapter implements Disposable {
 

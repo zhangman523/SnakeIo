@@ -1,4 +1,4 @@
-package zhangman523.github.snakeio;
+package zhangman523.github.snakeio.util;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;

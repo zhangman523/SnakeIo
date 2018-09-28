@@ -15,7 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import zhangman523.github.snakeio.objects.Food;
-import zhangman523.github.snakeio.objects.Snake;
+import zhangman523.github.snakeio.util.AudioManager;
+import zhangman523.github.snakeio.util.Constants;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
