@@ -14,10 +14,8 @@ public class GamePreferences {
     public boolean music;
     public float volSound;
     public float volMusic;
-    public int charSkin;
-    public boolean showFpsCounter;
+    public boolean touchPadLeft;
 
-    public boolean useMonochromeShader;
     private Preferences prefs;
 
     private GamePreferences() {
@@ -27,11 +25,9 @@ public class GamePreferences {
     public void load() {
         sound = prefs.getBoolean("sound", true);
         music = prefs.getBoolean("music", true);
-        volSound = MathUtils.clamp(prefs.getFloat("volSound", 0.5f), 0.0f, 1.0f);
-        volMusic = MathUtils.clamp(prefs.getFloat("volMusic", 0.5f), 0.0f, 1.0f);
-        charSkin = MathUtils.clamp(prefs.getInteger("charSkin", 0), 0, 2);
-        showFpsCounter = prefs.getBoolean("showFpsCounter", false);
-        useMonochromeShader = prefs.getBoolean("useMonochromeShader", false);
+        volSound = MathUtils.clamp(prefs.getFloat("volSound", 1.0f), 0.0f, 1.0f);
+        volMusic = MathUtils.clamp(prefs.getFloat("volMusic", 1.0f), 0.0f, 1.0f);
+        touchPadLeft = prefs.getBoolean("touchPadLeft", true);
     }
 
     public void save() {
@@ -39,9 +35,7 @@ public class GamePreferences {
         prefs.putBoolean("music", music);
         prefs.putFloat("volSound", volSound);
         prefs.putFloat("volMusic", volMusic);
-        prefs.putInteger("charSkin", charSkin);
-        prefs.putBoolean("showFpsCounter", showFpsCounter);
-        prefs.putBoolean("useMonochromeShader", useMonochromeShader);
+        prefs.putBoolean("touchPadLeft", touchPadLeft);
         prefs.flush();
     }
 }

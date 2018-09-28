@@ -7,7 +7,6 @@ import zhangman523.github.snakeio.Assets;
 import zhangman523.github.snakeio.WorldController;
 import zhangman523.github.snakeio.WorldRenderer;
 import zhangman523.github.snakeio.util.AudioManager;
-import zhangman523.github.snakeio.util.GamePreferences;
 
 public class GameScreen extends AbstractGameScreen {
     private WorldController worldController;
@@ -21,7 +20,7 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void show() {
-        worldController = new WorldController();
+        worldController = new WorldController(game);
         worldRenderer = new WorldRenderer(worldController);
         Gdx.input.setCatchBackKey(true);
     }

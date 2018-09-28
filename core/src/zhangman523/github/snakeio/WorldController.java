@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +13,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import zhangman523.github.snakeio.objects.Food;
 import zhangman523.github.snakeio.objects.Snake;
+import zhangman523.github.snakeio.screens.DirectedGame;
+import zhangman523.github.snakeio.screens.MenuScreen;
+import zhangman523.github.snakeio.screens.transitions.ScreenTransition;
+import zhangman523.github.snakeio.screens.transitions.ScreenTransitionSlide;
 import zhangman523.github.snakeio.util.AudioManager;
 import zhangman523.github.snakeio.util.CameraHelper;
 import zhangman523.github.snakeio.util.Constants;
@@ -29,7 +34,10 @@ public class WorldController extends InputAdapter implements Disposable {
 
     public boolean gameOver;
 
-    public WorldController() {
+    private DirectedGame game;
+
+    public WorldController(DirectedGame game) {
+        this.game = game;
         init();
     }
 
@@ -51,6 +59,14 @@ public class WorldController extends InputAdapter implements Disposable {
             snake.position.set(MathUtils.random(-Constants.MAP_WIDTH / 2 + 5, Constants.MAP_WIDTH / 2 - 5), MathUtils.random(-Constants.MAP_HEIGHT / 2 + 5, Constants.MAP_HEIGHT / 2 - 5));
             enemies.add(snake);
         }
+    }
+
+    //返回菜单
+    public void backToMenu() {
+        // switch to menu screen
+        ScreenTransition transition = ScreenTransitionSlide.init(0.75f, ScreenTransitionSlide.DOWN,
+                false, Interpolation.bounceOut);
+        game.setScreen(new MenuScreen(game), transition);
     }
 
     public void update(float deltaTime) {

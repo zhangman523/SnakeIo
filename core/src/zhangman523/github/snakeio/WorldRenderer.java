@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import zhangman523.github.snakeio.objects.Food;
 import zhangman523.github.snakeio.util.AudioManager;
 import zhangman523.github.snakeio.util.Constants;
+import zhangman523.github.snakeio.util.GamePreferences;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
@@ -106,7 +107,11 @@ public class WorldRenderer implements Disposable {
     private ImageButton buildSpeed() {
         Drawable drawable = new TextureRegionDrawable(Assets.instance.ui.lightning);
         btnSpeed = new ImageButton(drawable);
-        btnSpeed.setBounds(stage.getWidth() - 150, 50, 100, 100);
+        if (GamePreferences.instance.touchPadLeft) {
+            btnSpeed.setBounds(stage.getWidth() - 150, 50, 100, 100);
+        } else {
+            btnSpeed.setBounds(50, 50, 100, 100);
+        }
         btnSpeed.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -126,7 +131,11 @@ public class WorldRenderer implements Disposable {
     private Touchpad buildTouchPad() {
         Skin skin = touchPadSkin;
         touchpad = new Touchpad(20, skin);
-        touchpad.setBounds(50, 50, 100, 100);
+        if (GamePreferences.instance.touchPadLeft) {
+            touchpad.setBounds(50, 50, 100, 100);
+        } else {
+            touchpad.setBounds(stage.getWidth() - 150, 50, 100, 100);
+        }
         touchpad.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -171,7 +180,7 @@ public class WorldRenderer implements Disposable {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showOptionsWindow(false, true);
-                Gdx.app.exit();
+                worldController.backToMenu();
             }
         });
         btnStart = new TextButton("ReStart", skinLibgdx);

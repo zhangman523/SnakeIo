@@ -5,12 +5,13 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import zhangman523.github.snakeio.screens.transitions.ScreenTransition;
+import zhangman523.github.snakeio.screens.transitions.ScreenTransitionFade;
+import zhangman523.github.snakeio.util.AudioManager;
 import zhangman523.github.snakeio.util.Constants;
 import zhangman523.github.snakeio.util.GamePreferences;
 
@@ -112,15 +113,50 @@ public class MenuScreen extends AbstractGameScreen {
         childTable.add(robcoinModel).width(120).height(70);
         layer.add(childTable).padLeft(5);
         if (debugEnable) layer.debug();
+
+        endlessModel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                playGame();
+            }
+        });
+        teamModel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                playGame();
+            }
+        });
+        challengeModel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                playGame();
+            }
+        });
+        robcoinModel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                playGame();
+            }
+        });
         return layer;
     }
 
+    private void playGame() {
+        ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+        game.setScreen(new GameScreen(game), transition);
+    }
 
     private Table buildSettingLayer() {
         Table layer = new Table();
         layer.top().right();
         setting = new Button(snakeSkin, "setting");
         layer.add(setting).padRight(20).padTop(20);
+        setting.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                showOptionsWindow(true, true);
+            }
+        });
         return layer;
     }
 
@@ -147,6 +183,8 @@ public class MenuScreen extends AbstractGameScreen {
         chkMusic = new CheckBox("", defaultSkin);
         table.add(chkMusic).padLeft(10);
         table.add(new Label("Music", defaultSkin)).padLeft(5);
+        chkSound.setChecked(GamePreferences.instance.sound);
+        chkMusic.setChecked(GamePreferences.instance.music);
         return table;
     }
 
@@ -161,12 +199,15 @@ public class MenuScreen extends AbstractGameScreen {
         rightOp = new CheckBox("", defaultSkin);
         table.add(rightOp).padLeft(10);
         table.add(new Label("Right", defaultSkin)).padLeft(5);
+        ButtonGroup<CheckBox> buttonGroup = new ButtonGroup<CheckBox>();
+        buttonGroup.add(leftOp, rightOp);
+        leftOp.setChecked(GamePreferences.instance.touchPadLeft);
+        rightOp.setChecked(!GamePreferences.instance.touchPadLeft);
         return table;
     }
 
     private Table buildWinBtn() {
         Table tbl = new Table();
-        // + Separator
         Label lbl = null;
         lbl = new Label("", defaultSkin);
         lbl.setColor(0.75f, 0.75f, 0.75f, 1);
@@ -180,27 +221,36 @@ public class MenuScreen extends AbstractGameScreen {
         lbl.getStyle().background = defaultSkin.newDrawable("white");
         tbl.add(lbl).colspan(2).height(1).width(220).pad(0, 1, 5, 0);
         tbl.row();
-        // + Save Button with event handler
         btnWinSave = new TextButton("Save", defaultSkin);
         tbl.add(btnWinSave).padRight(30);
         btnWinSave.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                onSaveClicked();
-                showOptionsWindow(false, false);
+                onSaveClicked();
             }
         });
-        // + Cancel Button with even handler
         btnWinCancel = new TextButton("Cancel", defaultSkin);
         tbl.add(btnWinCancel);
         btnWinCancel.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                onCancelClicked();
                 showOptionsWindow(false, false);
             }
         });
         return tbl;
+    }
+
+    private void onSaveClicked() {
+        showOptionsWindow(false, false);
+        saveSettings();
+    }
+
+    private void saveSettings() {
+        GamePreferences prefs = GamePreferences.instance;
+        prefs.sound = chkSound.isChecked();
+        prefs.music = chkMusic.isChecked();
+        prefs.touchPadLeft = leftOp.isChecked();
+        prefs.save();
     }
 
     @Override
